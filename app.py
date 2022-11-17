@@ -7,6 +7,7 @@ import time
 import wget
 import shutil
 import threading
+import subprocess
 
 home=os.path.expanduser("~")
 appdata=f'{home}\\AppData\\Roaming'
@@ -56,10 +57,13 @@ def update(aicon, startup):
   if float(appversion) != float(version['app']):
     aicon.notify(f"Đang update app từ {float(appversion)} -> {float(version['app'])}")
     wget.download(f"https://github.com/Dino-VN/Modpack-Autoupdate/releases/download/{float(version['app'])}/MinecraftModpack.exe", f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
-    os.system(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
+    # os.system(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
+    subprocess.call(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
     os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   if float(mcversion) != float(version['mod']):
     aicon.notify(f"Đang update Modpack từ {float(mcversion)} -> {float(version['mod'])}")
+    aicon.notify(f"Đang thoát minecraft")
+    subprocess.call(f'taskkill /IM javaw.exe /F')
     wget.download(version[settings["version"]], f'{home}\\AppData\\Local\\Temp\\modpack.zip')
     shutil.rmtree(f"{appdata}\\.minecraft\\mods", ignore_errors=True)
     shutil.unpack_archive(f'{home}\\AppData\\Local\\Temp\\modpack.zip', f"{appdata}\\.minecraft")

@@ -32,8 +32,7 @@ if application_path != f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup
   print(f"taskkill /im MinecraftModpack.exe /f & copy \"{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe\" \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\" /Y & \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
   wget.download(f"https://github.com/Dino-VN/Modpack-Autoupdate/releases/download/{float(version['app'])}/MinecraftModpack.exe", f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   # shutil.copy(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe', f"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe")
-  subprocess.call(f"taskkill /im MinecraftModpack.exe /f & copy \"{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe\" \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\" /Y & \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
-  subprocess.call(f"taskkill /im MinecraftModpack.exe /f & copy")
+  os.system(f"taskkill /im MinecraftModpack.exe /f & copy \"{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe\" \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\" /Y & \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
   # os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   subprocess.call(f"\"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
   sys.exit(1)
@@ -62,7 +61,7 @@ def update(aicon, startup):
     aicon.notify(f"Đang update app từ {float(appversion)} -> {float(version['app'])}")
     wget.download(f"https://github.com/Dino-VN/Modpack-Autoupdate/releases/download/{float(version['app'])}/MinecraftModpack.exe", f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
     # os.system(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
-    subprocess.call(f' taskkill /IM MinecraftModpack.exe /F & "{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe"')
+    os.system(f' taskkill /IM MinecraftModpack.exe /F & "{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe"')
     os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   if float(mcversion) != float(version['mod']):
     aicon.notify(f"Đang update Modpack từ {float(mcversion)} -> {float(version['mod'])}")

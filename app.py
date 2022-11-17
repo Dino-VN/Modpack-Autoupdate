@@ -9,6 +9,10 @@ import shutil
 import threading
 import subprocess
 
+#-----------------
+appversion = 1.1
+#-----------------
+
 home=os.path.expanduser("~")
 appdata=f'{home}\\AppData\\Roaming'
 exited= False
@@ -20,7 +24,6 @@ elif __file__:
 
 if not os.path.isfile(f'{appdata}\\.minecraft\\settings.json'):
   open(f'{appdata}\\.minecraft\\settings.json',"x").write("{\n\"mcv\":\"0.0\",\n\"version\":\"1_19\"}")
-appversion = 1.0
 
 if application_path != f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup':
   version = json.loads(urllib.request.urlopen("https://raw.githubusercontent.com/Dino-VN/Modpack-Autoupdate/main/app.json").read().decode())
@@ -62,7 +65,7 @@ def update(aicon, startup):
     os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   if float(mcversion) != float(version['mod']):
     aicon.notify(f"Đang update Modpack từ {float(mcversion)} -> {float(version['mod'])}")
-    aicon.notify(f"Đang thoát minecraft")
+    # aicon.notify(f"Đang thoát minecraft")
     subprocess.call(f'taskkill /IM javaw.exe /F')
     wget.download(version[settings["version"]], f'{home}\\AppData\\Local\\Temp\\modpack.zip')
     shutil.rmtree(f"{appdata}\\.minecraft\\mods", ignore_errors=True)
@@ -79,8 +82,16 @@ def exit(aicon, item):
   global stop_threads
   stop_threads = True
 
+def none():
+  return
+
 # To finally show you icon, call run
 systray = icon('Minecraft', appicon, menu=menu(
+  item(
+    f'Phiên bản app: ${appversion}',
+    update,
+    checked=lambda  item: None
+  ),
   item(
     'Kiểm tra cập nhập',
     update,

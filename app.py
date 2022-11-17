@@ -27,14 +27,15 @@ if not os.path.isfile(f'{appdata}\\.minecraft\\settings.json'):
 
 if application_path != f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup':
   version = json.loads(urllib.request.urlopen("https://raw.githubusercontent.com/Dino-VN/Modpack-Autoupdate/main/app.json").read().decode())
-  if os.path.isfile(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe'):
-    os.remove(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe')
+  # if os.path.isfile(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe'):
+  #   os.remove(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe')
+  print(f"taskkill /im MinecraftModpack.exe /f & copy \"{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe\" \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\" /Y & \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
   wget.download(f"https://github.com/Dino-VN/Modpack-Autoupdate/releases/download/{float(version['app'])}/MinecraftModpack.exe", f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
-  shutil.copy(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe', f"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe")
-  os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
-  if os.path.isfile(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack (1).exe'):
-    os.remove(f'{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack (1).exe')
-  os.system(f"\"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
+  # shutil.copy(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe', f"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe")
+  subprocess.call(f"taskkill /im MinecraftModpack.exe /f & copy \"{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe\" \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\" /Y & \"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
+  subprocess.call(f"taskkill /im MinecraftModpack.exe /f & copy")
+  # os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
+  subprocess.call(f"\"{appdata}\Microsoft\Windows\Start Menu\Programs\Startup\MinecraftModpack.exe\"")
   sys.exit(1)
 
 def create_image(width, height, color1, color2):
@@ -61,7 +62,7 @@ def update(aicon, startup):
     aicon.notify(f"Đang update app từ {float(appversion)} -> {float(version['app'])}")
     wget.download(f"https://github.com/Dino-VN/Modpack-Autoupdate/releases/download/{float(version['app'])}/MinecraftModpack.exe", f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
     # os.system(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
-    subprocess.call(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
+    subprocess.call(f' taskkill /IM MinecraftModpack.exe /F & "{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe"')
     os.remove(f'{home}\\AppData\\Local\\Temp\\MinecraftModpack.exe')
   if float(mcversion) != float(version['mod']):
     aicon.notify(f"Đang update Modpack từ {float(mcversion)} -> {float(version['mod'])}")
@@ -88,7 +89,7 @@ def none():
 # To finally show you icon, call run
 systray = icon('Minecraft', appicon, menu=menu(
   item(
-    f'Phiên bản app: ${appversion}',
+    f'Phiên bản app: {appversion}',
     update,
     checked=lambda  item: None
   ),
